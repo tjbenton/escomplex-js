@@ -10,6 +10,7 @@ modulePath = '../src';
 
 mockery.registerAllowable(modulePath);
 mockery.registerAllowable('check-types');
+mockery.registerAllowable('espree');
 
 suite('index:', function () {
     var log, walker;
@@ -18,11 +19,11 @@ suite('index:', function () {
         log = {};
         walker = {};
         mockery.enable({ useCleanCache: true });
-        mockery.registerMock('esprima', {
+        mockery.registerMock('espree', {
             parse: spooks.fn({
-                name: 'esprima.parse',
+                name: 'espree.parse',
                 log: log,
-                result: 'esprima.parse result'
+                result: 'espree.parse result'
             })
         });
         mockery.registerMock('escomplex-ast-moz', walker);
@@ -36,7 +37,7 @@ suite('index:', function () {
     });
 
     teardown(function () {
-        mockery.deregisterMock('esprima');
+        mockery.deregisterMock('espree');
         mockery.deregisterMock('escomplex-ast-moz');
         mockery.deregisterMock('escomplex');
         mockery.disable();
@@ -74,8 +75,8 @@ suite('index:', function () {
             });
         });
 
-        test('esprima.parse was not called', function () {
-            assert.strictEqual(log.counts['esprima.parse'], 0);
+        test('espree.parse was not called', function () {
+            assert.strictEqual(log.counts['espree.parse'], 0);
         });
 
         test('escomplex.analyse was not called', function () {
@@ -94,36 +95,36 @@ suite('index:', function () {
                 options = result = undefined;
             });
 
-            test('esprima.parse was called twice', function () {
-                assert.strictEqual(log.counts['esprima.parse'], 2);
+            test('espree.parse was called twice', function () {
+                assert.strictEqual(log.counts['espree.parse'], 2);
             });
 
-            test('esprima.parse was passed two arguments first time', function () {
-                assert.lengthOf(log.args['esprima.parse'][0], 2);
+            test('espree.parse was passed two arguments first time', function () {
+                assert.lengthOf(log.args['espree.parse'][0], 2);
             });
 
-            test('esprima.parse was given correct source first time', function () {
-                assert.strictEqual(log.args['esprima.parse'][0][0], 'console.log("foo");');
+            test('espree.parse was given correct source first time', function () {
+                assert.strictEqual(log.args['espree.parse'][0][0], 'console.log("foo");');
             });
 
-            test('esprima.parse was given correct options first time', function () {
-                assert.isObject(log.args['esprima.parse'][0][1]);
-                assert.isTrue(log.args['esprima.parse'][0][1].loc);
-                assert.lengthOf(Object.keys(log.args['esprima.parse'][0][1]), 1);
+            test('espree.parse was given correct options first time', function () {
+                assert.isObject(log.args['espree.parse'][0][1]);
+                assert.isTrue(log.args['espree.parse'][0][1].loc);
+                assert.lengthOf(Object.keys(log.args['espree.parse'][0][1]), 2);
             });
 
-            test('esprima.parse was passed two arguments second time', function () {
-                assert.lengthOf(log.args['esprima.parse'][1], 2);
+            test('espree.parse was passed two arguments second time', function () {
+                assert.lengthOf(log.args['espree.parse'][1], 2);
             });
 
-            test('esprima.parse was given correct source second time', function () {
-                assert.strictEqual(log.args['esprima.parse'][1][0], '"bar";');
+            test('espree.parse was given correct source second time', function () {
+                assert.strictEqual(log.args['espree.parse'][1][0], '"bar";');
             });
 
-            test('esprima.parse was given correct options second time', function () {
-                assert.isObject(log.args['esprima.parse'][1][1]);
-                assert.isTrue(log.args['esprima.parse'][1][1].loc);
-                assert.lengthOf(Object.keys(log.args['esprima.parse'][1][1]), 1);
+            test('espree.parse was given correct options second time', function () {
+                assert.isObject(log.args['espree.parse'][1][1]);
+                assert.isTrue(log.args['espree.parse'][1][1].loc);
+                assert.lengthOf(Object.keys(log.args['espree.parse'][1][1]), 2);
             });
 
             test('escomplex.analyse was called once', function () {
@@ -140,12 +141,12 @@ suite('index:', function () {
 
                 assert.isObject(log.args['escomplex.analyse'][0][0][0]);
                 assert.strictEqual(log.args['escomplex.analyse'][0][0][0].path, '/foo.js');
-                assert.strictEqual(log.args['escomplex.analyse'][0][0][0].ast, 'esprima.parse result');
+                assert.strictEqual(log.args['escomplex.analyse'][0][0][0].ast, 'espree.parse result');
                 assert.lengthOf(Object.keys(log.args['escomplex.analyse'][0][0][0]), 2);
 
                 assert.isObject(log.args['escomplex.analyse'][0][0][1]);
                 assert.strictEqual(log.args['escomplex.analyse'][0][0][1].path, '../bar.js');
-                assert.strictEqual(log.args['escomplex.analyse'][0][0][1].ast, 'esprima.parse result');
+                assert.strictEqual(log.args['escomplex.analyse'][0][0][1].ast, 'espree.parse result');
                 assert.lengthOf(Object.keys(log.args['escomplex.analyse'][0][0][1]), 2);
             });
 
@@ -174,22 +175,22 @@ suite('index:', function () {
                 options = result = undefined;
             });
 
-            test('esprima.parse was called once', function () {
-                assert.strictEqual(log.counts['esprima.parse'], 1);
+            test('espree.parse was called once', function () {
+                assert.strictEqual(log.counts['espree.parse'], 1);
             });
 
-            test('esprima.parse was passed two arguments', function () {
-                assert.lengthOf(log.args['esprima.parse'][0], 2);
+            test('espree.parse was passed two arguments', function () {
+                assert.lengthOf(log.args['espree.parse'][0], 2);
             });
 
-            test('esprima.parse was given correct source', function () {
-                assert.strictEqual(log.args['esprima.parse'][0][0], 'foo bar baz');
+            test('espree.parse was given correct source', function () {
+                assert.strictEqual(log.args['espree.parse'][0][0], 'foo bar baz');
             });
 
-            test('esprima.parse was given correct options', function () {
-                assert.isObject(log.args['esprima.parse'][0][1]);
-                assert.isTrue(log.args['esprima.parse'][0][1].loc);
-                assert.lengthOf(Object.keys(log.args['esprima.parse'][0][1]), 1);
+            test('espree.parse was given correct options', function () {
+                assert.isObject(log.args['espree.parse'][0][1]);
+                assert.isTrue(log.args['espree.parse'][0][1].loc);
+                assert.lengthOf(Object.keys(log.args['espree.parse'][0][1]), 2);
             });
 
             test('escomplex.analyse was called once', function () {
@@ -201,7 +202,7 @@ suite('index:', function () {
             });
 
             test('escomplex.analyse was given correct ast', function () {
-                assert.strictEqual(log.args['escomplex.analyse'][0][0], 'esprima.parse result');
+                assert.strictEqual(log.args['escomplex.analyse'][0][0], 'espree.parse result');
             });
 
             test('escomplex.analyse was given correct walker', function () {

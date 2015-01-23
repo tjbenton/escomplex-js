@@ -2,14 +2,57 @@
 
 'use strict';
 
-var check, esprima, walker, escomplex;
+var check, espree, walker, escomplex;
 
 check = require('check-types');
-esprima = require('esprima');
+espree = require('espree');
 walker = require('escomplex-ast-moz');
 escomplex = require('escomplex');
 
 exports.analyse = analyse;
+exports.ecmaFeatures = {
+    // enable parsing of let/const
+    blockBindings: true,
+
+    // enable parsing of regular expression y flag
+    regexYFlag: true,
+
+    // enable parsing of regular expression u flag
+    regexUFlag: true,
+
+    // enable parsing of binary literals
+    binaryLiterals: true,
+
+    // enable parsing of ES6 octal literals
+    octalLiterals: true,
+
+    // enable parsing unicode code point escape sequences
+    unicodeCodePointEscapes: true,
+
+    // enable parsing of default parameters
+    defaultParams: false,
+
+    // enable parsing of for-of statement
+    forOf: true,
+
+    // enable parsing computed object literal properties
+    objectLiteralComputedProperties: true,
+
+    // enable parsing of shorthand object literal methods
+    objectLiteralShorthandMethods: true,
+
+    // enable parsing of shorthand object literal properties
+    objectLiteralShorthandProperties: true,
+
+    // Allow duplicate object literal properties (except '__proto__')
+    objectLiteralDuplicateProperties: true,
+
+    // enable parsing of generators/yield
+    generators: true,
+
+    // React JSX parsing
+    jsx: true
+};
 
 function analyse (source, options) {
     if (check.array(source)) {
@@ -34,7 +77,7 @@ function analyseSources (sources, options) {
 }
 
 function getSyntaxTree (source) {
-    return esprima.parse(source, { loc: true });
+    return espree.parse(source, { loc: true, ecmaFeatures: exports.ecmaFeatures });
 }
 
 function performAnalysis (ast, options) {
