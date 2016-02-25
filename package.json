@@ -26,14 +26,14 @@
   ],
   "dependencies": {
     "check-types": "2.1.x",
+    "espree": "^3.0.2",
     "escomplex": "0.2.5",
-    "escomplex-ast-moz": "0.1.x",
-    "espree": "^1.6.0"
+    "escomplex-ast-moz": "0.1.x"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "jshint": "2.5.x",
-    "mocha": "2.0.x",
-    "chai": "1.10.x",
+    "mocha": "^2.4.5",
     "mockery": "1.4.x",
     "spooks": "0.5.x"
   },

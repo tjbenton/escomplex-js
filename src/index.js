@@ -11,72 +11,34 @@ escomplex = require('escomplex');
 
 exports.analyse = analyse;
 exports.ecmaFeatures = {
- 
-        // enable parsing of arrow functions 
-        arrowFunctions: true,
- 
-        // enable parsing of let/const 
-        blockBindings: true,
- 
-        // enable parsing of destructured arrays and objects 
-        destructuring: true,
- 
-        // enable parsing of regular expression y flag 
-        regexYFlag: true,
- 
-        // enable parsing of regular expression u flag 
-        regexUFlag: true,
- 
-        // enable parsing of template strings 
-        templateStrings: true,
- 
-        // enable parsing of binary literals 
-        binaryLiterals: true,
- 
-        // enable parsing of ES6 octal literals 
-        octalLiterals: true,
- 
-        // enable parsing unicode code point escape sequences 
-        unicodeCodePointEscapes: true,
- 
-        // enable parsing of default parameters 
-        defaultParams: true,
- 
-        // enable parsing of rest parameters 
-        restParams: true,
- 
-        // enable parsing of for-of statement 
-        forOf: true,
- 
-        // enable parsing computed object literal properties 
-        objectLiteralComputedProperties: true,
- 
-        // enable parsing of shorthand object literal methods 
-        objectLiteralShorthandMethods: true,
- 
-        // enable parsing of shorthand object literal properties 
-        objectLiteralShorthandProperties: true,
- 
-        // Allow duplicate object literal properties (except '__proto__') 
-        objectLiteralDuplicateProperties: true,
- 
-        // enable parsing of generators/yield 
-        generators: true,
- 
-        // enable parsing spread operator 
-        spread: true,
- 
-        // enable parsing classes 
-        classes: true,
- 
-        // enable parsing of modules 
-        modules: true,
- 
-        // enable React JSX parsing 
-        jsx: true,
- 
-        // enable return in global scope 
-        globalReturn: true
+    arrowFunctions: true, // enable parsing of arrow functions
+    binaryLiterals: true, // enable parsing of binary literals
+    blockBindings: true, // enable parsing of let/const
+    classes: true, // enable parsing classes
+    defaultParams: true, // enable parsing of default parameters
+    destructuring: true, // enable parsing of destructured arrays and objects
+    experimentalObjectRestSpread: true, // allow experimental object rest/spread
+    experimentalSpreadProperty: true, // allow experimental spread property
+    newTarget: true,
+    forOf: true, // enable parsing of for-of statement
+    generators: true, // enable parsing of generators/yield
+    globalReturn: true, // enable return in global scope
+    jsx: true, // enable React JSX parsing
+    modules: true, // enable parsing of modules
+    objectLiteralComputedProperties: true, // enable parsing computed object literal properties
+    objectLiteralDuplicateProperties: true, // Allow duplicate object literal properties (except '__proto__')
+    objectLiteralShorthandMethods: true, // enable parsing of shorthand object literal methods
+    objectLiteralShorthandProperties: true, // enable parsing of shorthand object literal properties
+    octalLiterals: true, // enable parsing of ES6 octal literals
+    regexUFlag: true, // enable parsing of regular expression u flag
+    regexYFlag: true, // enable parsing of regular expression y flag
+    restParams: true, // enable parsing of rest parameters
+    spread: true, // enable parsing spread operator
+    superInFunctions: true,
+    templateStrings: true, // enable parsing of template strings
+    unicodeCodePointEscapes: true, // enable parsing unicode code point escape sequences
+    allowReserved: true,
+    experimentalAsyncAwait: true // enable async await support when it's added to espree
 };
 
 function analyse (source, options) {
@@ -102,7 +64,13 @@ function analyseSources (sources, options) {
 }
 
 function getSyntaxTree (source) {
-    return espree.parse(source, { loc: true, ecmaFeatures: exports.ecmaFeatures });
+    return espree.parse(source, {
+      loc: true,
+      ecmaVersion: 6,
+      allowReserved: true,
+      sourceType: "module",
+      ecmaFeatures: exports.ecmaFeatures
+    });
 }
 
 function performAnalysis (ast, options) {
@@ -112,4 +80,3 @@ function performAnalysis (ast, options) {
 function analyseSource (source, options) {
     return performAnalysis(getSyntaxTree(source), options);
 }
-
